@@ -4,14 +4,13 @@
 
 package frc.robot;
 
-import frc.robot.commands.Autos;
-import frc.robot.commands.ExampleCommand;
-import frc.robot.subsystems.SwerveModule;
 import frc.robot.subsystems.SwerveSubsystem;
+import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.wpilibj.XboxController;
+import edu.wpi.first.wpilibj.PS4Controller.Button;
 import edu.wpi.first.wpilibj2.command.Command;
-import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
-import edu.wpi.first.wpilibj2.command.button.Trigger;
+import edu.wpi.first.wpilibj2.command.RunCommand;
+import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 
 /**
  * This class is where the bulk of the robot should be declared. Since Command-based is a
@@ -23,10 +22,28 @@ public class RobotContainer {
 
     private final SwerveSubsystem m_drive = new SwerveSubsystem();
 
-    private XboxController Xinput = new XboxController(0);
+    private XboxController Xinput = new XboxController(Constants.OIConstants.kControllerPort);
 
-    public RobotContainer() {
-        
+    public RobotContainer() {     
+        configurButtonBinding();
+
+        m_drive.setDefaultCommand(
+            new RunCommand(
+                () -> m_drive.drive(
+                    MathUtil.applyDeadband(Xinput.getLeftY(), Constants.OIConstants.kDeadBand), 
+                    MathUtil.applyDeadband(Xinput.getLeftX(), Constants.OIConstants.kDeadBand), 
+                    MathUtil.applyDeadband(Xinput.getRightX(), Constants.OIConstants.kDeadBand), 
+                    true), 
+                    m_drive));
+    }
+
+    private void configurButtonBinding() {
+        new JoystickButton(Xinput, Button.kR1.value)
+        .whileTrue(new RunCommand(() -> m_drive.setX(), m_drive) );
+    }
+
+    public Command getAutonomousCommand() {
+        return null;
     }
 }
 
