@@ -9,7 +9,6 @@
 src/main/java/robot  
 ├── Robot.java  
 ├── RobotContainer.java  
-├── commands/  
 └── subsystems/  
 
 ---
@@ -34,13 +33,4 @@ src/main/java/robot
 - 驅動底盤
 - 感測器整合
 - 機構控制（Shooter / Intake / Arm 等）
-
----
-
-### **Commands — 指令（`commands/`）**
-定義機器人可執行的動作邏輯，例如：
-- 自動對準
-- 行駛路徑
-- 機構操作
-
 
